@@ -1,0 +1,16 @@
+torch
+#==1.6.0
+torchvision
+#==0.7.0
+timm
+#==0.3.2
+numpy
+scikit-learn
+Pillow
+tqdm
+yacs
+ftfy
+regex
+transformers
+einops
+# tensorwatch

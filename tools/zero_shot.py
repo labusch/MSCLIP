@@ -15,11 +15,13 @@ from torch.utils.collect_env import get_pretty_env_info
 import torch.multiprocessing
 torch.multiprocessing.set_sharing_strategy('file_system')
 
+
+
 import _init_paths
-from utils.comm import comm
-from utils.utils import create_logger
-from config import config
-from config import update_config
+from msclip.utils.comm import comm
+from msclip.utils.utils import create_logger
+from msclip.config import config
+from msclip.config import update_config
 import logging
 from sklearn.model_selection import train_test_split
 from torch.utils.data import Dataset, Subset
@@ -31,13 +33,13 @@ from PIL import Image
 # Refer to https://stackoverflow.com/questions/12984426/python-pil-ioerror-image-file-truncated-with-big-images
 from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
-from dataset.languages import SimpleTokenizer
-from dataset.prompts.constants import ALL_CLASSES_DICT
-from dataset.prompts.constants import ALL_TEMPLATES_DICT
+from msclip.dataset.languages import SimpleTokenizer
+from msclip.dataset.prompts.constants import ALL_CLASSES_DICT
+from msclip.dataset.prompts.constants import ALL_TEMPLATES_DICT
 from tqdm import tqdm
 from sklearn.metrics import precision_recall_curve
 from sklearn.metrics import confusion_matrix, balanced_accuracy_score, roc_auc_score
-from models import clip_openai_pe_res_v1
+from msclip.models import clip_openai_pe_res_v1
 
 
 TRANSFER_NAME = {'oxford-flower-102':'flower102-tf', 'fgvc-aircraft-2013b':'fgvc-aircraft-2013b-variants102'}
@@ -206,10 +208,10 @@ def zero_shot():
             transforms.Normalize(mean=config.INPUT.MEAN, std=config.INPUT.STD),
         ])
     if config.DATASET.DATASET == "voc2007classification":
-        from evaluation.dataset import Voc2007Classification
+        from msclip.evaluation.dataset import Voc2007Classification
         test_dataloader = get_dataloader(Voc2007Classification(config.DATASET.ROOT, image_set="test", transform=transform_CLIP))
     elif config.DATASET.DATASET == "hatefulmemes":
-        from evaluation.dataset import HatefulMemes
+        from msclip.evaluation.dataset import HatefulMemes
         test_dataloader = get_dataloader(HatefulMemes(config.DATASET.ROOT, image_set="val", transform=transform_CLIP))
     else:
         test_dataloader = get_dataloader(

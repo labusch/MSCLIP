@@ -14,15 +14,15 @@ from pathlib import Path
 # >>>>>>> Added for gumbel softmax <<<<<<<<<
 from torch.autograd import Variable
 # >>>>>>> Added for new attention module <<<<<<<<<
-from torch.nn.modules.linear import _LinearWithBias
+from torch.nn.modules.linear import NonDynamicallyQuantizableLinear as _LinearWithBias
 from torch.nn.init import xavier_uniform_, constant_, xavier_normal_
 
 from transformers import AutoModel
 
 from timm.models.layers import DropPath, trunc_normal_
 
-from utils.comm import comm
-from utils.comm import gather_tensors
+from ..utils.comm import comm
+from ..utils.comm import gather_tensors
 
 # >>>>>>> Added for conv reshape <<<<<<<<<
 from einops import rearrange

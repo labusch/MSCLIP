@@ -7,7 +7,7 @@ import yaml
 import json
 from yacs.config import CfgNode as CN
 
-from utils.comm import comm
+from ..utils.comm import comm
 from .models import get_model_name
 
 
