@@ -219,7 +219,7 @@ def zero_shot():
                                                  transform=transform_CLIP))
     # >>>>>>>>>>>>>> Load Model <<<<<<<<<<<<<<
     device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-    model = clip_openai_pe_res_v1.get_clip_model(config)
+    model, _, _ = clip_openai_pe_res_v1.get_clip_model(config=config)
     model_file = config.MODEL.PRETRAINED_MODEL
     logging.info('=> load model file: {}'.format(model_file))
     state_dict = torch.load(model_file, map_location="cpu")

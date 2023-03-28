@@ -278,6 +278,7 @@ def get_config_name(config):
 
 def _update_config_from_file(config, cfg_file):
     config.defrost()
+    # import ipdb;ipdb.set_trace()
     with open(cfg_file, 'r') as f:
         yaml_cfg = yaml.load(f, Loader=yaml.FullLoader)
 

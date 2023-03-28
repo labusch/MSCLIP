@@ -2,6 +2,7 @@ from collections import OrderedDict
 import re
 from typing import Callable, Tuple, Union
 import logging
+import argparse
 from matplotlib.pyplot import get
 import pandas as pd
 
@@ -28,7 +29,9 @@ from ..utils.comm import gather_tensors
 from einops import rearrange
 from einops.layers.torch import Rearrange
 import pdb
-
+from msclip.config import update_config
+from msclip.config import config as msclip_config
+from torchvision import models, transforms
 
 class Bottleneck(nn.Module):
     expansion = 4
@@ -3124,6 +3127,7 @@ class CLIP(nn.Module):
     #     return logits_image_text, logits_image_text_fiximage, logits_image_text_fixtext
 
     def forward(self, image, text):
+
         if self.gumbel_select:
             action = self.gumbel_softmax(self.gumbel_logit)
         else:
@@ -3179,7 +3183,19 @@ def convert_weights(model: nn.Module):
     model.apply(_convert_weights_to_fp16)
 
 
-def get_clip_model(config, vocab_size=None, eot_token=None, **kwargs):
+def get_clip_model(config=None, vocab_size=None, eot_token=None, config_file=None, **kwargs):
+    
+    if config is None:
+        config = msclip_config
+        args = argparse.Namespace()
+
+        args.opts = []
+        args.cfg = config_file
+        update_config(config, args)
+        config.defrost()
+        config.NAME = ""
+        config.freeze()
+
     embed_dim = config.MODEL.SPEC.EMBED_DIM
 
     image_resolution = config.TRAIN.IMAGE_SIZE[0]
@@ -3224,4 +3240,12 @@ def get_clip_model(config, vocab_size=None, eot_token=None, **kwargs):
         output_dir=config.OUTPUT_DIR
     )
 
-    return model
+    img_size=224
+    extract_transform = transforms.Compose([
+        transforms.Resize(img_size),
+        transforms.CenterCrop(img_size),
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    ])
+
+    return model, config, extract_transform
