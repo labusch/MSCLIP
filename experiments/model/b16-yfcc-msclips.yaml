@@ -8,7 +8,7 @@ MODEL:
     TEXT:
       WIDTH: 768
       HEADS: 12
-  PRETRAINED_MODEL: 'data/MSCLIP/original/b16-yfcc-msclips_ckpt.pth'
+  PRETRAINED_MODEL: 'qurator-data/MSCLIP/original/b16-yfcc-msclips_ckpt.pth'
 CUSTOM:
   SHARE_MODULES: ['attn.in_proj_weight', 'attn.in_proj_bias', 'attn.out_proj', 'mlp']
 
