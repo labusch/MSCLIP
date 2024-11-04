@@ -30,3 +30,5 @@ def tokenize(texts: Union[str, List[str]], context_length: int = 77):
 
     return result
 """
+
+__import__('pkg_resources').declare_namespace(__name__)
