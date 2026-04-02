@@ -1,7 +1,9 @@
 import os
 
-import pkg_resources
 from setuptools import setup, find_packages
+
+with open('requirements.txt') as fp:
+    install_requires = fp.read()
 
 setup(
     name="msclip",
@@ -10,12 +12,7 @@ setup(
     description="",
     author="Hxyou",
     packages=find_packages(exclude=["tests*"]),
-    install_requires=[
-        str(r)
-        for r in pkg_resources.parse_requirements(
-            open(os.path.join(os.path.dirname(__file__), "requirements.txt"))
-        )
-    ],
+    install_requires=install_requires,
     include_package_data=True,
     extras_require={'dev': ['pytest']},
 )
